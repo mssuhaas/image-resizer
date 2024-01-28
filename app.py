@@ -20,6 +20,7 @@ app.add_middleware(
 
 class ImageData(BaseModel):
     image: str
+    initial_quality: int = 90
 
 
 temp_dir = "temp_dir"
@@ -45,7 +46,7 @@ async def process_image(data: ImageData):
     image_data = base64.b64decode(base64_image)
     image = Image.open(io.BytesIO(image_data))
     output_path = f"{temp_dir}/processed_image.jpg"
-    resize_and_compress(io.BytesIO(image_data), output_path)
+    resize_and_compress(io.BytesIO(image_data), output_path, initial_quality)
     with open(output_path, "rb") as img_file:
         img_str = base64.b64encode(img_file.read())
     return {"image": img_str.decode("utf-8")}
