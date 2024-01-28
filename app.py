@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from PIL import Image
 import base64
@@ -8,6 +9,14 @@ from image_processing.core import resize_and_compress
 
 app = FastAPI()
 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class ImageData(BaseModel):
     image: str
